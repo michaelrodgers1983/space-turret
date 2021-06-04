@@ -3,7 +3,8 @@
     "description": "",
     "dependencies": {
         "device": "*",
-        "animation": "*"
+        "animation": "*",
+        "pxt-arcade-image-transform": "github:robo-technical-group/pxt-arcade-image-transform#v1.0.8"
     },
     "files": [
         "main.blocks",
@@ -19,7 +20,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.4.43",
+        "target": "1.4.44",
         "targetId": "arcade"
     },
     "supportedTargets": [
