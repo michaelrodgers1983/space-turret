@@ -1,8 +1,8 @@
 controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
-    Turret_Angle += -10
+    Turret_Angle += 10
 })
 controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
-    Turret_Angle += 10
+    Turret_Angle += -10
 })
 let Cruiser = sprites.create(assets.image`-`, SpriteKind.Player)
 let Turret = sprites.create(img`
