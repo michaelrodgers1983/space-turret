@@ -1,14 +1,33 @@
 controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
-	
+    projectile = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . 1 1 . . . . . . . 
+        . . . . . . 1 3 3 1 . . . . . . 
+        . . . . . 1 3 a a 3 1 . . . . . 
+        . . . . 1 3 a 2 2 a 3 1 . . . . 
+        . . . . 1 3 a 2 2 a 3 1 . . . . 
+        . . . . . 1 3 a a 3 1 . . . . . 
+        . . . . . . 1 3 3 1 . . . . . . 
+        . . . . . . . 1 1 . . . . . . . 
+        `, Turret, Turret_VX, Turret_VY)
+    pause(200)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile16`, function (sprite, location) {
     game.splash("Level one complete")
     game.splash("Now entering level two")
     Level_2()
-    tiles.setTilemap(tilemap`level2`)
 })
 controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
     Turret_Angle += 10
+    Turret_VX += 22
+    Turret_VY += -22
 })
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
     Cruiser.destroy(effects.fire, 500)
@@ -16,11 +35,10 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSp
     pause(1000)
     game.over(false)
 })
-controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Repeated, function () {
-    Turret_Angle += -10
-})
 controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
     Turret_Angle += -10
+    Turret_VX += -22
+    Turret_VY += 22
 })
 controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
     Laser = sprites.createProjectileFromSprite(img`
@@ -41,13 +59,10 @@ controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, Cruiser, 0, -200)
-    pause(500)
-})
-controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Repeated, function () {
-    Turret_Angle += 10
+    pause(1000)
 })
 function Level_2 () {
-	
+    tiles.setTilemap(tilemap`level2`)
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
@@ -55,12 +70,16 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     info.changeScoreBy(10)
 })
 let Laser: Sprite = null
+let projectile: Sprite = null
 let Asteroid: Sprite = null
 let Flamer: Sprite = null
 let Lava_Bot: Sprite = null
+let Turret_VX = 0
+let Turret_VY = 0
+let Turret: Sprite = null
 let Cruiser: Sprite = null
 Cruiser = sprites.create(assets.image`-`, SpriteKind.Player)
-let Turret = sprites.create(img`
+Turret = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -80,6 +99,8 @@ let Turret = sprites.create(img`
     `, SpriteKind.Player)
 controller.player1.moveSprite(Cruiser, 70, 0)
 let Turret_Angle = 0
+Turret_VY = -200
+Turret_VX = 0
 tiles.setTilemap(tilemap`level1 -`)
 tiles.placeOnTile(Cruiser, tiles.getTileLocation(5, 59))
 for (let index = 0; index < 8; index++) {
