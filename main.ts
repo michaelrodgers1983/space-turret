@@ -1,6 +1,12 @@
 controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
 	
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile16`, function (sprite, location) {
+    game.splash("Level one complete")
+    game.splash("Now entering level two")
+    Level_2()
+    tiles.setTilemap(tilemap`level2`)
+})
 controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
     Turret_Angle += 10
 })
@@ -40,6 +46,9 @@ controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
 controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Repeated, function () {
     Turret_Angle += 10
 })
+function Level_2 () {
+	
+}
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
     sprite.destroy()
