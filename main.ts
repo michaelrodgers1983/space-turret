@@ -6,12 +6,24 @@ namespace SpriteKind {
     export const Enemy_Projectile = SpriteKind.create()
     export const Spike_bot = SpriteKind.create()
 }
+function Level_restart () {
+    if (Level == 1) {
+        Level_1()
+    }
+    if (Level == 2) {
+        Level_2()
+    }
+    if (Level == 3) {
+        Level_3()
+    }
+}
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Lava_Bot, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
     sprite.destroy()
     info.changeScoreBy(10)
 })
 function Level_1 () {
+    game.splash("Level One")
     Level = 1
     tiles.setTilemap(tilemap`level1 -`)
     tiles.placeOnTile(Cruiser, tiles.getTileLocation(5, 59))
@@ -115,7 +127,7 @@ sprites.onOverlap(SpriteKind.Lava_Bot, SpriteKind.Player, function (sprite, othe
     game.over(false)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile16`, function (sprite, location) {
-    game.splash("Level one complete")
+    game.splash("Level One complete")
     game.splash("Now entering level two")
     Level_2()
 })
@@ -192,6 +204,16 @@ sprites.onOverlap(SpriteKind.Asteroid, SpriteKind.Player, function (sprite, othe
 })
 function Level_3 () {
     Level = 3
+    for (let value of sprites.allOfKind(SpriteKind.Lava_Bot)) {
+        value.destroy()
+    }
+    for (let value of sprites.allOfKind(SpriteKind.Fireball)) {
+        value.destroy()
+    }
+    for (let value of sprites.allOfKind(SpriteKind.Spike_bot)) {
+        value.destroy()
+    }
+    tiles.setTilemap(tilemap`level2`)
 }
 function Level_2 () {
     Level = 2
