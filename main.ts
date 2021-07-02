@@ -20,6 +20,7 @@ function Level_restart () {
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Lava_Bot, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
     sprite.destroy()
+    music.smallCrash.play()
     info.changeScoreBy(10)
 })
 function Level_1 () {
@@ -79,11 +80,7 @@ function Level_1 () {
     }
 }
 sprites.onOverlap(SpriteKind.Spike_bot, SpriteKind.Player, function (sprite, otherSprite) {
-    Cruiser.destroy(effects.fire, 500)
-    Turret.destroy(effects.fire, 500)
-    scene.cameraShake(4, 500)
-    pause(1000)
-    game.over(false)
+    Cruiser_death()
 })
 controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
     projectile = sprites.createProjectileFromSprite(img`
@@ -95,14 +92,14 @@ controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
-        . . . . . . . 1 1 . . . . . . . 
-        . . . . . . 1 3 3 1 . . . . . . 
-        . . . . . 1 3 a a 3 1 . . . . . 
-        . . . . 1 3 a 2 2 a 3 1 . . . . 
-        . . . . 1 3 a 2 2 a 3 1 . . . . 
-        . . . . . 1 3 a a 3 1 . . . . . 
-        . . . . . . 1 3 3 1 . . . . . . 
-        . . . . . . . 1 1 . . . . . . . 
+        . . . . . . . 3 3 . . . . . . . 
+        . . . . . . . a a . . . . . . . 
+        . . . . . . . 2 2 . . . . . . . 
+        . . . . . . . 2 2 . . . . . . . 
+        . . . . . . . 2 2 . . . . . . . 
+        . . . . . . . a a . . . . . . . 
+        . . . . . . . 3 3 . . . . . . . 
+        . . . . . . . . . . . . . . . . 
         `, Turret, Turret_VX, Turret_VY)
     music.playMelody("C5 C5 B A G G G G ", 2000)
     pause(200)
@@ -110,21 +107,14 @@ controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Asteroid, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
     sprite.destroy()
+    music.smallCrash.play()
     info.changeScoreBy(10)
 })
 sprites.onOverlap(SpriteKind.Fireball, SpriteKind.Player, function (sprite, otherSprite) {
-    Cruiser.destroy(effects.fire, 500)
-    Turret.destroy(effects.fire, 500)
-    scene.cameraShake(4, 500)
-    pause(1000)
-    game.over(false)
+    Cruiser_death()
 })
 sprites.onOverlap(SpriteKind.Lava_Bot, SpriteKind.Player, function (sprite, otherSprite) {
-    Cruiser.destroy(effects.fire, 500)
-    Turret.destroy(effects.fire, 500)
-    scene.cameraShake(4, 500)
-    pause(1000)
-    game.over(false)
+    Cruiser_death()
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile16`, function (sprite, location) {
     game.splash("Level One complete")
@@ -142,11 +132,7 @@ controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
     Turret_VY += -22
 })
 sprites.onOverlap(SpriteKind.Flame, SpriteKind.Player, function (sprite, otherSprite) {
-    Cruiser.destroy(effects.fire, 500)
-    Turret.destroy(effects.fire, 500)
-    scene.cameraShake(4, 500)
-    pause(1000)
-    game.over(false)
+    Cruiser_death()
 })
 scene.onOverlapTile(SpriteKind.Asteroid, assets.tile`myTile18`, function (sprite, location) {
     sprite.destroy()
@@ -154,6 +140,7 @@ scene.onOverlapTile(SpriteKind.Asteroid, assets.tile`myTile18`, function (sprite
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Fireball, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
     sprite.destroy()
+    music.smallCrash.play()
     info.changeScoreBy(10)
 })
 controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
@@ -184,23 +171,16 @@ controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
     pause(1000)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy_Projectile, function (sprite, otherSprite) {
-    Cruiser.destroy(effects.fire, 500)
-    Turret.destroy(effects.fire, 500)
-    scene.cameraShake(4, 500)
-    pause(1000)
-    game.over(false)
+    Cruiser_death()
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Flame, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
     sprite.destroy()
+    music.smallCrash.play()
     info.changeScoreBy(10)
 })
 sprites.onOverlap(SpriteKind.Asteroid, SpriteKind.Player, function (sprite, otherSprite) {
-    Cruiser.destroy(effects.fire, 500)
-    Turret.destroy(effects.fire, 500)
-    scene.cameraShake(4, 500)
-    pause(1000)
-    game.over(false)
+    Cruiser_death()
 })
 function Level_3 () {
     Level = 3
@@ -224,7 +204,7 @@ function Level_2 () {
         value.destroy()
     }
     tiles.setTilemap(tilemap`level2`)
-    tiles.placeOnTile(Cruiser, tiles.getTileLocation(2, 1))
+    tiles.placeOnTile(Cruiser, tiles.getTileLocation(7, 58))
     for (let index = 0; index < 10; index++) {
         Lava_Bot = sprites.create(img`
             . . . . . f . . . . f . . . . . 
@@ -302,8 +282,17 @@ function Level_2 () {
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Spike_bot, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
     sprite.destroy()
+    music.smallCrash.play()
     info.changeScoreBy(10)
 })
+function Cruiser_death () {
+    Cruiser.destroy(effects.fire, 500)
+    Turret.destroy(effects.fire, 500)
+    music.bigCrash.play()
+    scene.cameraShake(4, 500)
+    pause(1000)
+    game.over(false)
+}
 let Fire: Sprite = null
 let Fireballer: Sprite = null
 let Lava_Bot: Sprite = null
@@ -371,10 +360,10 @@ forever(function () {
     transformSprites.rotateSprite(Turret, Turret_Angle)
 })
 forever(function () {
-    music.playMelody("C D - C D - C - ", 220)
-    music.playMelody("C D - C D - C - ", 220)
-    music.playMelody("C D - C D - C - ", 220)
-    music.playMelody("C D - C D - C - ", 220)
-    music.playMelody("F - F - E - E - ", 220)
-    music.playMelody("F - F - E - E - ", 220)
+    music.playMelody("C - - - C - - - ", 220)
+    music.playMelody("C D C - C - - - ", 220)
+    music.playMelody("C - - - C - - - ", 220)
+    music.playMelody("C D C - C - - - ", 220)
+    music.playMelody("F - - - E - - - ", 220)
+    music.playMelody("F - F - E - - - ", 220)
 })
