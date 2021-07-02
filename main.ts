@@ -116,11 +116,19 @@ sprites.onOverlap(SpriteKind.Fireball, SpriteKind.Player, function (sprite, othe
 sprites.onOverlap(SpriteKind.Lava_Bot, SpriteKind.Player, function (sprite, otherSprite) {
     Cruiser_death()
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile21`, function (sprite, location) {
+    game.splash("Level three complete")
+    game.splash("Now entering level four")
+    Level_4()
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile16`, function (sprite, location) {
     game.splash("Level One complete")
     game.splash("Now entering level two")
     Level_2()
 })
+function Level_4 () {
+    Level = 4
+}
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile17`, function (sprite, location) {
     game.splash("Level two complete")
     game.splash("Now entering level three")
@@ -193,7 +201,33 @@ function Level_3 () {
     for (let value of sprites.allOfKind(SpriteKind.Spike_bot)) {
         value.destroy()
     }
-    tiles.setTilemap(tilemap`level2`)
+    tiles.setTilemap(tilemap`level4`)
+    tiles.placeOnTile(Cruiser, tiles.getTileLocation(7, 58))
+    for (let index = 0; index < 40; index++) {
+        Asteroid = sprites.create(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . f f f . . . . . 
+            . . f . . . f f d d d f . . . . 
+            . f d f f f d d b b b d f . . . 
+            f d b d d d b b b b b d f . . . 
+            f d b b b b b b a a b b d f . . 
+            f d b b b a a a a a a b b d f . 
+            . f d b a a a a c a a a b b d f 
+            . f d b a a c c c c a a a b b f 
+            . f b b a a c c c c a a b b f . 
+            . . f a a a c c c c a a b f . . 
+            . . f a c c c c c a f f f . . . 
+            . . f a a c c c f f . . . . . . 
+            . . . f f f f f . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, SpriteKind.Asteroid)
+    }
+    for (let value of sprites.allOfKind(SpriteKind.Asteroid)) {
+        tiles.placeOnTile(value, tiles.getTileLocation(randint(0, 10), randint(19, 50)))
+        value.setVelocity(randint(0, 10), randint(40, 50))
+        value.setBounceOnWall(true)
+    }
 }
 function Level_2 () {
     Level = 2
