@@ -370,3 +370,11 @@ forever(function () {
     Turret.setPosition(Cruiser.x, Cruiser.y - -20)
     transformSprites.rotateSprite(Turret, Turret_Angle)
 })
+forever(function () {
+    music.playMelody("C D - C D - C - ", 220)
+    music.playMelody("C D - C D - C - ", 220)
+    music.playMelody("C D - C D - C - ", 220)
+    music.playMelody("C D - C D - C - ", 220)
+    music.playMelody("F - F - E - E - ", 220)
+    music.playMelody("F - F - E - E - ", 220)
+})
