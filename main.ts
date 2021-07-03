@@ -19,6 +19,10 @@ function Level_restart () {
         Game_start()
         Level_3()
     }
+    if (Level == 4) {
+        Game_start()
+        Level_4()
+    }
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Lava_Bot, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
