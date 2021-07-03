@@ -8,12 +8,15 @@ namespace SpriteKind {
 }
 function Level_restart () {
     if (Level == 1) {
+        Game_start()
         Level_1()
     }
     if (Level == 2) {
+        Game_start()
         Level_2()
     }
     if (Level == 3) {
+        Game_start()
         Level_3()
     }
 }
@@ -83,7 +86,9 @@ sprites.onOverlap(SpriteKind.Spike_bot, SpriteKind.Player, function (sprite, oth
     Cruiser_death()
 })
 controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
-    projectile = sprites.createProjectileFromSprite(img`
+    Turret_laser = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -93,11 +98,9 @@ controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . 3 3 . . . . . . . 
-        . . . . . . . a a . . . . . . . 
-        . . . . . . . 2 2 . . . . . . . 
-        . . . . . . . 2 2 . . . . . . . 
-        . . . . . . . 2 2 . . . . . . . 
-        . . . . . . . a a . . . . . . . 
+        . . . . . . 3 a a 3 . . . . . . 
+        . . . . . . a 2 2 a . . . . . . 
+        . . . . . . 3 a a 3 . . . . . . 
         . . . . . . . 3 3 . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, Turret, Turret_VX, Turret_VY)
@@ -136,14 +139,15 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile17`, function (sprite, 
 })
 controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
     Turret_Angle += 10
-    Turret_VX += 22
-    Turret_VY += -22
 })
 sprites.onOverlap(SpriteKind.Flame, SpriteKind.Player, function (sprite, otherSprite) {
     Cruiser_death()
 })
 scene.onOverlapTile(SpriteKind.Asteroid, assets.tile`myTile18`, function (sprite, location) {
     sprite.destroy()
+})
+controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Repeated, function () {
+    Turret_Angle += -10
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Fireball, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
@@ -153,11 +157,9 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Fireball, function (sprite, 
 })
 controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
     Turret_Angle += -10
-    Turret_VX += -22
-    Turret_VY += 22
 })
 controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
-    Laser = sprites.createProjectileFromSprite(img`
+    Cruiser_laser = sprites.createProjectileFromSprite(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . 1 . . . . . . . . 1 . . . 
@@ -181,6 +183,31 @@ controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy_Projectile, function (sprite, otherSprite) {
     Cruiser_death()
 })
+function Game_start () {
+    Cruiser = sprites.create(assets.image`-`, SpriteKind.Player)
+    Turret = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . c c . . . . . . . 
+        . . . . . . . c c . . . . . . . 
+        . . . . . . . c c . . . . . . . 
+        . . . . . . . c c . . . . . . . 
+        . . . . . . c c c c . . . . . . 
+        . . . . . . c a a c . . . . . . 
+        . . . . . c a b b a c . . . . . 
+        . . . . . c a b b a c . . . . . 
+        . . . . . . c a a c . . . . . . 
+        . . . . . . . c c . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Player)
+    controller.player1.moveSprite(Cruiser, 70, 0)
+    Turret_Angle = 0
+    Turret_VY = -200
+    Turret_VX = 0
+}
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Flame, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
     sprite.destroy()
@@ -191,6 +218,7 @@ sprites.onOverlap(SpriteKind.Asteroid, SpriteKind.Player, function (sprite, othe
     Cruiser_death()
 })
 function Level_3 () {
+    game.splash("Level Three")
     Level = 3
     for (let value of sprites.allOfKind(SpriteKind.Lava_Bot)) {
         value.destroy()
@@ -229,7 +257,11 @@ function Level_3 () {
         value.setBounceOnWall(true)
     }
 }
+controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Repeated, function () {
+    Turret_Angle += 10
+})
 function Level_2 () {
+    game.splash("Level Two")
     Level = 2
     for (let value of sprites.allOfKind(SpriteKind.Asteroid)) {
         value.destroy()
@@ -325,42 +357,21 @@ function Cruiser_death () {
     music.bigCrash.play()
     scene.cameraShake(4, 500)
     pause(1000)
-    game.over(false)
+    Level_restart()
 }
 let Fire: Sprite = null
 let Fireballer: Sprite = null
 let Lava_Bot: Sprite = null
-let Laser: Sprite = null
-let projectile: Sprite = null
-let Asteroid: Sprite = null
-let Level = 0
-let Turret_VX = 0
-let Turret_VY = 0
-let Turret: Sprite = null
-let Cruiser: Sprite = null
-Cruiser = sprites.create(assets.image`-`, SpriteKind.Player)
-Turret = sprites.create(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . c c . . . . . . . 
-    . . . . . . . c c . . . . . . . 
-    . . . . . . . c c . . . . . . . 
-    . . . . . . . c c . . . . . . . 
-    . . . . . . c c c c . . . . . . 
-    . . . . . . c a a c . . . . . . 
-    . . . . . c a b b a c . . . . . 
-    . . . . . c a b b a c . . . . . 
-    . . . . . . c a a c . . . . . . 
-    . . . . . . . c c . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    `, SpriteKind.Player)
-controller.player1.moveSprite(Cruiser, 70, 0)
+let Cruiser_laser: Sprite = null
 let Turret_Angle = 0
-Turret_VY = -200
-Turret_VX = 0
+let Turret_VY = 0
+let Turret_VX = 0
+let Turret: Sprite = null
+let Turret_laser: Sprite = null
+let Asteroid: Sprite = null
+let Cruiser: Sprite = null
+let Level = 0
+Game_start()
 Level_1()
 game.onUpdateInterval(1000, function () {
     if (Level == 2) {
@@ -388,16 +399,95 @@ game.onUpdateInterval(1000, function () {
     }
 })
 forever(function () {
+    if (Turret_Angle == 0) {
+        Turret_VX = 0
+        Turret_VY = -200
+    }
+    if (Turret_Angle == 10) {
+        Turret_VX = 20
+        Turret_VY = -180
+    }
+    if (Turret_Angle == 20) {
+        Turret_VX = 40
+        Turret_VY = -160
+    }
+    if (Turret_Angle == 30) {
+        Turret_VX = 60
+        Turret_VY = -140
+    }
+    if (Turret_Angle == 40) {
+        Turret_VX = 80
+        Turret_VY = -120
+    }
+    if (Turret_Angle == 50) {
+        Turret_VX = 100
+        Turret_VY = -100
+    }
+    if (Turret_Angle == 60) {
+        Turret_VX = 120
+        Turret_VY = -80
+    }
+    if (Turret_Angle == 70) {
+        Turret_VX = 140
+        Turret_VY = -60
+    }
+    if (Turret_Angle == 80) {
+        Turret_VX = 160
+        Turret_VY = -40
+    }
+    if (Turret_Angle == 90) {
+        Turret_VX = 200
+        Turret_VY = -20
+    }
+})
+forever(function () {
+    if (Turret_Angle == 0) {
+        Turret_VX = 0
+        Turret_VY = -200
+    }
+    if (Turret_Angle == -10) {
+        Turret_VX = -20
+        Turret_VY = -180
+    }
+    if (Turret_Angle == -20) {
+        Turret_VX = -40
+        Turret_VY = -160
+    }
+    if (Turret_Angle == -30) {
+        Turret_VX = -60
+        Turret_VY = -140
+    }
+    if (Turret_Angle == -40) {
+        Turret_VX = -80
+        Turret_VY = -120
+    }
+    if (Turret_Angle == -50) {
+        Turret_VX = -100
+        Turret_VY = -100
+    }
+    if (Turret_Angle == -60) {
+        Turret_VX = -120
+        Turret_VY = -80
+    }
+    if (Turret_Angle == -70) {
+        Turret_VX = -140
+        Turret_VY = -60
+    }
+    if (Turret_Angle == -80) {
+        Turret_VX = -160
+        Turret_VY = -40
+    }
+    if (Turret_Angle == -90) {
+        Turret_VX = -200
+        Turret_VY = -20
+    }
+})
+forever(function () {
     scene.centerCameraAt(0, Cruiser.y - 30)
     Cruiser.setVelocity(0, -20)
     Turret.setPosition(Cruiser.x, Cruiser.y - -20)
     transformSprites.rotateSprite(Turret, Turret_Angle)
 })
 forever(function () {
-    music.playMelody("C - - - C - - - ", 220)
-    music.playMelody("C D C - C - - - ", 220)
-    music.playMelody("C - - - C - - - ", 220)
-    music.playMelody("C D C - C - - - ", 220)
-    music.playMelody("F - - - E - - - ", 220)
-    music.playMelody("F - F - E - - - ", 220)
+	
 })
