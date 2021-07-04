@@ -134,7 +134,19 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile16`, function (sprite, 
     Level_2()
 })
 function Level_4 () {
+    game.splash("Level Four")
     Level = 4
+    for (let value of sprites.allOfKind(SpriteKind.Fireball)) {
+        value.destroy()
+    }
+    for (let value of sprites.allOfKind(SpriteKind.Spike_bot)) {
+        value.destroy()
+    }
+    for (let value of sprites.allOfKind(SpriteKind.Asteroid)) {
+        value.destroy()
+    }
+    tiles.setTilemap(tilemap`level7`)
+    tiles.placeOnTile(Cruiser, tiles.getTileLocation(7, 58))
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile17`, function (sprite, location) {
     game.splash("Level two complete")
@@ -235,7 +247,7 @@ function Level_3 () {
     }
     tiles.setTilemap(tilemap`level4`)
     tiles.placeOnTile(Cruiser, tiles.getTileLocation(7, 58))
-    for (let index = 0; index < 40; index++) {
+    for (let index = 0; index < 20; index++) {
         Asteroid = sprites.create(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -256,8 +268,56 @@ function Level_3 () {
             `, SpriteKind.Asteroid)
     }
     for (let value of sprites.allOfKind(SpriteKind.Asteroid)) {
-        tiles.placeOnTile(value, tiles.getTileLocation(randint(0, 10), randint(19, 50)))
+        tiles.placeOnTile(value, tiles.getTileLocation(randint(0, 10), randint(40, 50)))
         value.setVelocity(randint(0, 10), randint(40, 50))
+        value.setBounceOnWall(true)
+    }
+    for (let index = 0; index < 10; index++) {
+        Fireballer = sprites.create(img`
+            . . . . . . . . . . . . . . . . 
+            5 . . . . 5 . . . . 5 . . . . 5 
+            . . . 5 . 5 5 5 . 5 5 5 5 . . . 
+            . . 5 5 5 5 5 5 5 4 4 5 5 5 5 . 
+            . 5 5 5 5 5 4 4 5 4 4 4 4 4 5 . 
+            . . . 5 5 4 4 4 4 4 4 4 4 5 5 . 
+            . . 5 5 5 4 4 2 2 2 2 4 4 5 . . 
+            . . 5 5 4 4 2 2 2 2 4 4 4 5 5 . 
+            . . . 5 5 4 2 2 2 2 4 4 4 5 5 . 
+            . 5 5 5 4 4 2 2 2 2 2 4 4 4 5 5 
+            . 5 5 4 4 4 4 2 2 4 4 4 4 4 5 5 
+            . . 5 5 5 4 4 4 4 4 4 4 4 5 5 . 
+            . . . . 5 4 4 4 4 4 5 5 5 5 5 . 
+            . . . . 5 5 5 5 5 5 5 5 . . . . 
+            . . 5 . . . . 5 5 5 5 . . . . . 
+            . . . . . . . . . . . . . 5 . . 
+            `, SpriteKind.Fireball)
+    }
+    for (let value of sprites.allOfKind(SpriteKind.Fireball)) {
+        tiles.placeOnTile(value, tiles.getTileLocation(randint(1, 8), randint(16, 34)))
+    }
+    for (let index = 0; index < 5; index++) {
+        Fireballer = sprites.create(img`
+            . . . . b b b b b b b b . . . . 
+            . . . b 4 4 4 4 4 4 4 4 b . . . 
+            . . b 4 4 b b 4 4 b b 4 4 b . . 
+            . b 4 4 b 5 5 b b 5 5 b 4 4 b . 
+            . b 4 b 4 b b 4 4 b b 4 b 4 b . 
+            b 4 4 b 4 4 4 4 4 4 4 4 b 4 4 b 
+            b 4 b . b 4 4 4 4 4 4 b . b 4 b 
+            b 4 b . . b b b b b b . . b 4 b 
+            . b 4 b . . . . . . . . b 4 b . 
+            . . b 4 b . . . . . . b 4 b . . 
+            . . . b . . . . . . . . b . . . 
+            . . b b b . . . . . . b b b . . 
+            . . b d b . . . . . . b d b . . 
+            . . . d . . . . . . . . d . . . 
+            . . . d . . . . . . . . d . . . 
+            . . . d . . . . . . . . d . . . 
+            `, SpriteKind.Spike_bot)
+    }
+    for (let value of sprites.allOfKind(SpriteKind.Spike_bot)) {
+        tiles.placeOnTile(value, tiles.getTileLocation(5, 4))
+        value.setVelocity(randint(10, 50), 0)
         value.setBounceOnWall(true)
     }
 }
@@ -364,8 +424,9 @@ function Cruiser_death () {
     Level_restart()
 }
 let Fire: Sprite = null
-let Fireballer: Sprite = null
+let Spike: Sprite = null
 let Lava_Bot: Sprite = null
+let Fireballer: Sprite = null
 let Cruiser_laser: Sprite = null
 let Turret_Angle = 0
 let Turret_VY = 0
@@ -376,9 +437,34 @@ let Asteroid: Sprite = null
 let Cruiser: Sprite = null
 let Level = 0
 Game_start()
-Level_1()
+Level_3()
+game.onUpdateInterval(2000, function () {
+    if (Level == 3) {
+        for (let value of sprites.allOfKind(SpriteKind.Spike_bot)) {
+            Spike = sprites.createProjectileFromSprite(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . 6 6 . . . . . . . 
+                . . . . . . . 6 6 . . . . . . . 
+                . . . . . . . 9 9 . . . . . . . 
+                . . . . . . . 9 9 . . . . . . . 
+                . . . . . . . d d . . . . . . . 
+                . . . . . . . d d . . . . . . . 
+                . . . . . . . 9 9 . . . . . . . 
+                . . . . . . . 9 9 . . . . . . . 
+                . . . . . . . 6 6 . . . . . . . 
+                . . . . . . . 6 6 . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `, value, 0, 100)
+            Spike.setKind(SpriteKind.Enemy_Projectile)
+        }
+    }
+})
 game.onUpdateInterval(1000, function () {
-    if (Level == 2) {
+    if (Level == 2 || Level == 3) {
         for (let value of sprites.allOfKind(SpriteKind.Fireball)) {
             Fire = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
