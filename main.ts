@@ -23,6 +23,10 @@ function Level_restart () {
         Game_start()
         Level_4()
     }
+    if (Level == 5) {
+        Game_start()
+        Level_5()
+    }
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Lava_Bot, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
@@ -89,6 +93,11 @@ function Level_1 () {
 sprites.onOverlap(SpriteKind.Spike_bot, SpriteKind.Player, function (sprite, otherSprite) {
     Cruiser_death()
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile22`, function (sprite, location) {
+    game.splash("Level four complete")
+    game.splash("Now entering the boss fight")
+    Level_5()
+})
 controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
     Turret_laser = sprites.createProjectileFromSprite(img`
         . . . . . . . . . . . . . . . . 
@@ -146,7 +155,57 @@ function Level_4 () {
         value.destroy()
     }
     tiles.setTilemap(tilemap`level7`)
-    tiles.placeOnTile(Cruiser, tiles.getTileLocation(7, 58))
+    tiles.placeOnTile(Cruiser, tiles.getTileLocation(7, 98))
+    for (let index = 0; index < 10; index++) {
+        Fireballer = sprites.create(img`
+            . . . . b b b b b b b b . . . . 
+            . . . b 4 4 4 4 4 4 4 4 b . . . 
+            . . b 4 4 b b 4 4 b b 4 4 b . . 
+            . b 4 4 b 5 5 b b 5 5 b 4 4 b . 
+            . b 4 b 4 b b 4 4 b b 4 b 4 b . 
+            b 4 4 b 4 4 4 4 4 4 4 4 b 4 4 b 
+            b 4 b . b 4 4 4 4 4 4 b . b 4 b 
+            b 4 b . . b b b b b b . . b 4 b 
+            . b 4 b . . . . . . . . b 4 b . 
+            . . b 4 b . . . . . . b 4 b . . 
+            . . . b . . . . . . . . b . . . 
+            . . b b b . . . . . . b b b . . 
+            . . b d b . . . . . . b d b . . 
+            . . . d . . . . . . . . d . . . 
+            . . . d . . . . . . . . d . . . 
+            . . . d . . . . . . . . d . . . 
+            `, SpriteKind.Spike_bot)
+    }
+    for (let value of sprites.allOfKind(SpriteKind.Spike_bot)) {
+        tiles.placeOnTile(value, tiles.getTileLocation(6, 73))
+        value.setVelocity(randint(10, 50), 0)
+        value.setBounceOnWall(true)
+    }
+    for (let index = 0; index < 25; index++) {
+        Asteroid = sprites.create(img`
+            . . . . . . . . . . f . . . . . 
+            . . . f . . . . . f . . . . . . 
+            . . . . f . . . f 5 f . . . . . 
+            . . . . f f . . . f 5 f . . . . 
+            . . . f 5 5 f . f 5 4 5 f . . . 
+            . . . f 5 4 5 f 5 4 4 5 f . . . 
+            . . f 5 4 4 4 5 4 4 2 4 5 f . . 
+            . . f 5 4 2 4 4 4 2 4 4 5 f . . 
+            . f 5 4 2 4 4 2 2 2 2 4 4 5 f . 
+            . f 5 4 4 2 2 2 2 2 4 2 4 5 f . 
+            . f 5 4 2 2 2 2 2 2 2 4 4 5 f . 
+            . . f 5 4 2 2 2 2 2 2 4 5 f . . 
+            . . f 5 4 2 2 2 2 2 4 4 5 f . . 
+            . . . f 4 4 2 2 2 2 4 4 f . . . 
+            . . . . f f 2 2 2 2 f f . . . . 
+            . . . . . . f f f f . . . . . . 
+            `, SpriteKind.Flame)
+    }
+    for (let value of sprites.allOfKind(SpriteKind.Flame)) {
+        tiles.placeOnTile(value, tiles.getTileLocation(randint(3, 8), randint(81, 93)))
+        value.setVelocity(randint(30, 60), 0)
+        value.setBounceOnWall(true)
+    }
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile17`, function (sprite, location) {
     game.splash("Level two complete")
@@ -171,6 +230,9 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Fireball, function (sprite, 
     music.smallCrash.play()
     info.changeScoreBy(10)
 })
+function Level_5 () {
+	
+}
 controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
     Turret_Angle += -10
 })
@@ -426,9 +488,9 @@ function Cruiser_death () {
 let Fire: Sprite = null
 let Spike: Sprite = null
 let Lava_Bot: Sprite = null
-let Fireballer: Sprite = null
 let Cruiser_laser: Sprite = null
 let Turret_Angle = 0
+let Fireballer: Sprite = null
 let Turret_VY = 0
 let Turret_VX = 0
 let Turret: Sprite = null
@@ -437,9 +499,9 @@ let Asteroid: Sprite = null
 let Cruiser: Sprite = null
 let Level = 0
 Game_start()
-Level_3()
+Level_4()
 game.onUpdateInterval(2000, function () {
-    if (Level == 3) {
+    if (Level == 4 || Level == 3) {
         for (let value of sprites.allOfKind(SpriteKind.Spike_bot)) {
             Spike = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
