@@ -39,7 +39,7 @@ function Level_1 () {
     Level = 1
     tiles.setTilemap(tilemap`level1 -`)
     tiles.placeOnTile(Cruiser, tiles.getTileLocation(5, 59))
-    for (let index = 0; index < 30; index++) {
+    for (let index = 0; index < 20; index++) {
         Asteroid = sprites.create(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -499,7 +499,7 @@ let Asteroid: Sprite = null
 let Cruiser: Sprite = null
 let Level = 0
 Game_start()
-Level_4()
+Level_1()
 game.onUpdateInterval(2000, function () {
     if (Level == 4 || Level == 3) {
         for (let value of sprites.allOfKind(SpriteKind.Spike_bot)) {
