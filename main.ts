@@ -39,7 +39,7 @@ function Level_1 () {
     Level = 1
     tiles.setTilemap(tilemap`level1 -`)
     tiles.placeOnTile(Cruiser, tiles.getTileLocation(5, 59))
-    for (let index = 0; index < 20; index++) {
+    for (let index = 0; index < 10; index++) {
         Asteroid = sprites.create(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -93,32 +93,15 @@ function Level_1 () {
 sprites.onOverlap(SpriteKind.Spike_bot, SpriteKind.Player, function (sprite, otherSprite) {
     Cruiser_death()
 })
+controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
+    Reverse = 2
+    pause(1000)
+    Reverse = 0
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile22`, function (sprite, location) {
     game.splash("Level four complete")
     game.splash("Now entering the boss fight")
     Level_5()
-})
-controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
-    Turret_laser = sprites.createProjectileFromSprite(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . 3 3 . . . . . . . 
-        . . . . . . 3 a a 3 . . . . . . 
-        . . . . . . a 2 2 a . . . . . . 
-        . . . . . . 3 a a 3 . . . . . . 
-        . . . . . . . 3 3 . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `, Turret, Turret_VX, Turret_VY)
-    music.playMelody("C5 C5 B A G G G G ", 2000)
-    pause(200)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Asteroid, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
@@ -212,17 +195,11 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile17`, function (sprite, 
     game.splash("Now entering level three")
     Level_3()
 })
-controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
-    Turret_Angle += 10
-})
 sprites.onOverlap(SpriteKind.Flame, SpriteKind.Player, function (sprite, otherSprite) {
     Cruiser_death()
 })
 scene.onOverlapTile(SpriteKind.Asteroid, assets.tile`myTile18`, function (sprite, location) {
     sprite.destroy()
-})
-controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Repeated, function () {
-    Turret_Angle += -10
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Fireball, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
@@ -233,30 +210,8 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Fireball, function (sprite, 
 function Level_5 () {
 	
 }
-controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
-    Turret_Angle += -10
-})
 controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
-    Cruiser_laser = sprites.createProjectileFromSprite(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . 1 . . . . . . . . 1 . . . 
-        . . . 1 . . . . . . . . 1 . . . 
-        . . . 9 . . . . . . . . 9 . . . 
-        . . . 9 . . . . . . . . 9 . . . 
-        . . . 6 . . . . . . . . 6 . . . 
-        . . . 6 . . . . . . . . 6 . . . 
-        . . . 6 . . . . . . . . 6 . . . 
-        . . . 8 . . . . . . . . 8 . . . 
-        . . . 8 . . . . . . . . 8 . . . 
-        . . . 8 . . . . . . . . 8 . . . 
-        . . . 8 . . . . . . . . 8 . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `, Cruiser, 0, -200)
-    music.playMelody("F F F E D C C C ", 2000)
-    pause(1000)
+	
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy_Projectile, function (sprite, otherSprite) {
     Cruiser_death()
@@ -383,8 +338,27 @@ function Level_3 () {
         value.setBounceOnWall(true)
     }
 }
-controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Repeated, function () {
-    Turret_Angle += 10
+controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Pressed, function () {
+    Turret_laser = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . 1 . . . . . . . . 1 . . . 
+        . . . 1 . . . . . . . . 1 . . . 
+        . . 1 3 1 . . . . . . 1 3 1 . . 
+        . . 1 3 1 . . . . . . 1 3 1 . . 
+        . 1 3 a 3 . . . . . . 3 a 3 1 . 
+        . . 3 a 3 . . . . . . 3 a 3 . . 
+        . . 3 c 3 . . . . . . 3 c 3 . . 
+        . . 3 a 3 . . . . . . 3 a 3 . . 
+        . . . a . . . . . . . . a . . . 
+        . . . 3 . . . . . . . . 3 . . . 
+        . . . 3 . . . . . . . . 3 . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, Turret, Turret_VX, Turret_VY)
+    music.playMelody("C5 C5 B A G G G G ", 2000)
+    pause(100)
 })
 function Level_2 () {
     game.splash("Level Two")
@@ -485,16 +459,21 @@ function Cruiser_death () {
     pause(1000)
     Level_restart()
 }
+controller.player1.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pressed, function () {
+    Reverse = 1
+    pause(1000)
+    Reverse = 0
+})
 let Fire: Sprite = null
 let Spike: Sprite = null
 let Lava_Bot: Sprite = null
-let Cruiser_laser: Sprite = null
-let Turret_Angle = 0
-let Fireballer: Sprite = null
-let Turret_VY = 0
-let Turret_VX = 0
-let Turret: Sprite = null
 let Turret_laser: Sprite = null
+let Turret_VX = 0
+let Turret_VY = 0
+let Turret_Angle = 0
+let Turret: Sprite = null
+let Fireballer: Sprite = null
+let Reverse = 0
 let Asteroid: Sprite = null
 let Cruiser: Sprite = null
 let Level = 0
@@ -551,93 +530,35 @@ game.onUpdateInterval(1000, function () {
     }
 })
 forever(function () {
-    if (Turret_Angle == 0) {
-        Turret_VX = 0
-        Turret_VY = -200
-    }
-    if (Turret_Angle == 10) {
-        Turret_VX = 20
-        Turret_VY = -180
-    }
-    if (Turret_Angle == 20) {
-        Turret_VX = 40
-        Turret_VY = -160
-    }
-    if (Turret_Angle == 30) {
-        Turret_VX = 60
-        Turret_VY = -140
-    }
-    if (Turret_Angle == 40) {
-        Turret_VX = 80
-        Turret_VY = -120
-    }
-    if (Turret_Angle == 50) {
-        Turret_VX = 100
-        Turret_VY = -100
-    }
-    if (Turret_Angle == 60) {
-        Turret_VX = 120
-        Turret_VY = -80
-    }
-    if (Turret_Angle == 70) {
-        Turret_VX = 140
-        Turret_VY = -60
-    }
-    if (Turret_Angle == 80) {
-        Turret_VX = 160
-        Turret_VY = -40
-    }
-    if (Turret_Angle == 90) {
-        Turret_VX = 200
-        Turret_VY = -20
-    }
-})
-forever(function () {
-    if (Turret_Angle == 0) {
-        Turret_VX = 0
-        Turret_VY = -200
-    }
-    if (Turret_Angle == -10) {
-        Turret_VX = -20
-        Turret_VY = -180
-    }
-    if (Turret_Angle == -20) {
-        Turret_VX = -40
-        Turret_VY = -160
-    }
-    if (Turret_Angle == -30) {
-        Turret_VX = -60
-        Turret_VY = -140
-    }
-    if (Turret_Angle == -40) {
-        Turret_VX = -80
-        Turret_VY = -120
-    }
-    if (Turret_Angle == -50) {
-        Turret_VX = -100
-        Turret_VY = -100
-    }
-    if (Turret_Angle == -60) {
-        Turret_VX = -120
-        Turret_VY = -80
-    }
-    if (Turret_Angle == -70) {
-        Turret_VX = -140
-        Turret_VY = -60
-    }
-    if (Turret_Angle == -80) {
-        Turret_VX = -160
-        Turret_VY = -40
-    }
-    if (Turret_Angle == -90) {
-        Turret_VX = -200
-        Turret_VY = -20
-    }
-})
-forever(function () {
     scene.centerCameraAt(0, Cruiser.y - 30)
-    Cruiser.setVelocity(0, -20)
-    Turret.setPosition(Cruiser.x, Cruiser.y - -20)
+    if (Reverse == 0) {
+        Cruiser.setVelocity(0, -20)
+    }
+    if (Reverse == 1) {
+        Cruiser.setVelocity(0, 20)
+    }
+    if (Reverse == 2) {
+        Cruiser.setVelocity(0, -60)
+        Cruiser.setImage(img`
+            . . . . . . . c c . . . . . . . 
+            . . . . . . c . . c . . . . . . 
+            . . . . . . c . . c . . . . . . 
+            . . . d . c . d d . c . d . . . 
+            . . . d . c 4 d d . c . d . . . 
+            . d . d c 4 d d d d . c d . d . 
+            . d . c . 4 d b b d 4 4 c . d . 
+            . d c . . 4 b b b b . 4 . c d . 
+            . c . . . 4 b b b b 4 4 . . c . 
+            c . . . . 4 d . . d 4 . . . . c 
+            c . . . c . d 4 4 d . c . . . c 
+            c . . c . c . . . . c . c . . c 
+            c . c . c . c . . c . . . c . c 
+            . c . . . c . c c . . . . . c . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `)
+    }
+    Turret.setPosition(Cruiser.x, Cruiser.y - 10)
     transformSprites.rotateSprite(Turret, Turret_Angle)
 })
 forever(function () {
