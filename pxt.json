@@ -1,5 +1,5 @@
 {
-    "name": "Space Turret",
+    "name": "Space Turret 2p",
     "description": "",
     "dependencies": {
         "device": "*",
@@ -20,7 +20,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.4.45",
+        "target": "1.5.46",
         "targetId": "arcade"
     },
     "supportedTargets": [
